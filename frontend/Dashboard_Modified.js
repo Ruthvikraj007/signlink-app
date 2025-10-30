@@ -1,4 +1,4 @@
-﻿﻿import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaCog, FaSignOutAlt, FaChevronDown, FaVideo, FaUsers, FaComments, FaSearch, FaUserFriends } from 'react-icons/fa';
@@ -36,13 +36,11 @@ export default function Dashboard() {
     setShowUserSearch(true);
   };
 
-  // Styles
   const containerStyle = {
     minHeight: '100vh',
     background: 'linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #262626 100%)',
     padding: '2rem 1rem',
-    color: 'white',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+    color: 'white'
   };
 
   const cardStyle = {
@@ -77,7 +75,7 @@ export default function Dashboard() {
   };
 
   const profileButtonStyle = {
-    padding: '0.75rem 1rem',
+    padding: '0.5rem 1rem',
     background: 'rgba(255, 255, 255, 0.1)',
     color: 'white',
     border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -100,7 +98,7 @@ export default function Dashboard() {
     border: '1px solid rgba(255, 255, 255, 0.1)',
     borderRadius: '16px',
     padding: '1rem',
-    minWidth: '250px',
+    minWidth: '280px',
     backdropFilter: 'blur(20px)',
     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
     zIndex: 1000
@@ -112,6 +110,7 @@ export default function Dashboard() {
     gap: '0.75rem',
     padding: '0.75rem 1rem',
     color: 'white',
+    textDecoration: 'none',
     borderRadius: '8px',
     transition: 'all 0.2s ease',
     cursor: 'pointer',
@@ -148,7 +147,7 @@ export default function Dashboard() {
 
   return (
     <div style={containerStyle}>
-      {/* Modals */}
+      {/* User Search Modal */}
       {showUserSearch && (
         <UserSearch onClose={() => setShowUserSearch(false)} />
       )}
@@ -158,13 +157,10 @@ export default function Dashboard() {
         <div style={headerStyle}>
           <div>
             <h1 style={titleStyle}>SignLink Dashboard</h1>
-            <p style={subtitleStyle}>
-              Welcome back, {user?.username}! Ready to connect?
-            </p>
+            <p style={subtitleStyle}>Welcome back, {user?.username}! Ready to connect?</p>
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative' }} ref={dropdownRef}>
-            {/* Profile Button */}
             <button 
               onClick={() => setShowProfileDropdown(!showProfileDropdown)}
               style={profileButtonStyle}
@@ -215,6 +211,29 @@ export default function Dashboard() {
                   </div>
                 </div>
 
+                {/* Profile Details */}
+                <div style={{ padding: '0.75rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                  <div style={{ marginBottom: '0.75rem' }}>
+                    <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '0.25rem' }}>
+                      Email
+                    </div>
+                    <div style={{ fontSize: '0.9rem' }}>{user?.email}</div>
+                  </div>
+                  
+                  <div>
+                    <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '0.25rem' }}>
+                      Member Since
+                    </div>
+                    <div style={{ fontSize: '0.9rem' }}>
+                      {user?.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      }) : 'Recently'}
+                    </div>
+                  </div>
+                </div>
+
                 {/* Dropdown Menu Items */}
                 <div style={{ padding: '0.5rem 0' }}>
                   <button
@@ -236,7 +255,7 @@ export default function Dashboard() {
                     onMouseOut={(e) => e.target.style.background = 'transparent'}
                     onClick={() => {
                       setShowProfileDropdown(false);
-                      // Add settings functionality here
+                      alert('Settings coming soon!');
                     }}
                   >
                     <FaCog size={16} />
@@ -261,113 +280,129 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div style={{ ...cardStyle, marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem' }}>Quick Actions</h2>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-            gap: '1.5rem'
-          }}>
-            <button 
-              onClick={handleMyFriends}
-              style={{
-                ...quickActionStyle,
-                background: 'linear-gradient(45deg, #00b894, #00cec9)'
-              }}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-8px) scale(1.02)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0) scale(1)'}
-            >
-              <FaUserFriends size={48} />
-              <div>
-                <div style={{ fontSize: '1.2rem', fontWeight: '600' }}>My Friends</div>
-                <div style={{ fontSize: '0.9rem', opacity: '0.9', marginTop: '0.5rem' }}>
-                  View friends and start video calls
-                </div>
-              </div>
-            </button>
-
-            <button 
-              onClick={handleFindUsers}
-              style={{
-                ...quickActionStyle,
-                background: 'linear-gradient(45deg, #405DE6, #833AB4)'
-              }}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-8px) scale(1.02)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0) scale(1)'}
-            >
-              <FaUsers size={48} />
-              <div>
-                <div style={{ fontSize: '1.2rem', fontWeight: '600' }}>Find Users</div>
-                <div style={{ fontSize: '0.9rem', opacity: '0.9', marginTop: '0.5rem' }}>
-                  Discover and connect with other users
-                </div>
-              </div>
-            </button>
+        {/* Main Content - Full width without sidebar */}
+        <div>
+          {/* Welcome Section */}
+          <div style={{ ...cardStyle, marginBottom: '2rem', textAlign: 'center' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1rem' }}>
+              Welcome to SignLink, {user?.username}! 🎉
+            </h2>
+            <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '1rem' }}>
+              {user?.userType === 'deaf' 
+                ? 'Start connecting with others through sign language translation' 
+                : 'Start connecting with deaf users through speech-to-text translation'
+              }
+            </p>
           </div>
-        </div>
 
-        {/* Features Grid */}
-        <div style={cardStyle}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem' }}>Features</h2>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-            gap: '1.5rem'
-          }}>
-            <div 
-              style={featureCardStyle}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-8px)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-            >
-              <FaUserFriends size={40} style={{ marginBottom: '1rem', color: '#00b894' }} />
-              <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem', fontWeight: '600' }}>My Friends</h3>
-              <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-                View your friends list and start video calls with one click
-              </p>
+          {/* Quick Actions */}
+          <div style={{ ...cardStyle, marginBottom: '2rem' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem' }}>Quick Actions</h2>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+              gap: '1.5rem'
+            }}>
+              <button 
+                onClick={handleMyFriends}
+                style={{
+                  ...quickActionStyle,
+                  background: 'linear-gradient(45deg, #00b894, #00cec9)'
+                }}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-8px) scale(1.02)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0) scale(1)'}
+              >
+                <FaUserFriends size={48} />
+                <div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: '600' }}>My Friends</div>
+                  <div style={{ fontSize: '0.9rem', opacity: '0.9', marginTop: '0.5rem' }}>
+                    View friends and start video calls
+                  </div>
+                </div>
+              </button>
+
+              <button 
+                onClick={handleFindUsers}
+                style={{
+                  ...quickActionStyle,
+                  background: 'linear-gradient(45deg, #405DE6, #833AB4)'
+                }}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-8px) scale(1.02)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0) scale(1)'}
+              >
+                <FaUsers size={48} />
+                <div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: '600' }}>Find Users</div>
+                  <div style={{ fontSize: '0.9rem', opacity: '0.9', marginTop: '0.5rem' }}>
+                    Discover and connect with other users
+                  </div>
+                </div>
+              </button>
             </div>
+          </div>
 
-            <div 
-              style={featureCardStyle}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-8px)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-            >
-              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
-                {user?.userType === 'deaf' ? '🤟' : '🎤'}
+          {/* Features Grid */}
+          <div style={cardStyle}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem' }}>Features</h2>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+              gap: '1.5rem'
+            }}>
+              <div 
+                style={featureCardStyle}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-8px)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+              >
+                <FaUserFriends size={40} style={{ marginBottom: '1rem', color: '#00b894' }} />
+                <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem', fontWeight: '600' }}>My Friends</h3>
+                <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                  View your friends list and start video calls with one click
+                </p>
               </div>
-              <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem', fontWeight: '600' }}>
-                {user?.userType === 'deaf' ? 'Sign Language Translation' : 'Speech to Text'}
-              </h3>
-              <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-                {user?.userType === 'deaf' 
-                  ? 'AI-powered translation converts your signs to text and speech instantly' 
-                  : 'Real-time speech recognition converts your voice to text for deaf users'
-                }
-              </p>
-            </div>
 
-            <div 
-              style={featureCardStyle}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-8px)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-            >
-              <FaComments size={40} style={{ marginBottom: '1rem', color: '#E1306C' }} />
-              <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem', fontWeight: '600' }}>Real-time Chat</h3>
-              <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-                Text-based messaging during calls for additional communication and clarity
-              </p>
-            </div>
+              <div 
+                style={featureCardStyle}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-8px)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+              >
+                <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>
+                  {user?.userType === 'deaf' ? '🤟' : '🎤'}
+                </div>
+                <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem', fontWeight: '600' }}>
+                  {user?.userType === 'deaf' ? 'Sign Language Translation' : 'Speech to Text'}
+                </h3>
+                <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                  {user?.userType === 'deaf' 
+                    ? 'AI-powered translation converts your signs to text and speech instantly' 
+                    : 'Real-time speech recognition converts your voice to text for deaf users'
+                  }
+                </p>
+              </div>
 
-            <div 
-              style={featureCardStyle}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-8px)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-            >
-              <FaSearch size={40} style={{ marginBottom: '1rem', color: '#FCAF45' }} />
-              <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem', fontWeight: '600' }}>User Discovery</h3>
-              <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-                Find and connect with other SignLink users
-              </p>
+              <div 
+                style={featureCardStyle}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-8px)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+              >
+                <FaComments size={40} style={{ marginBottom: '1rem', color: '#E1306C' }} />
+                <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem', fontWeight: '600' }}>Real-time Chat</h3>
+                <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                  Text-based messaging during calls for additional communication and clarity
+                </p>
+              </div>
+
+              <div 
+                style={featureCardStyle}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-8px)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+              >
+                <FaSearch size={40} style={{ marginBottom: '1rem', color: '#FCAF45' }} />
+                <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem', fontWeight: '600' }}>User Discovery</h3>
+                <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                  Find and connect with other SignLink users based on interests and availability
+                </p>
+              </div>
             </div>
           </div>
         </div>

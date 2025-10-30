@@ -40,14 +40,14 @@ export default function LoginForm({ onToggleMode }) {
   };
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {error && (
         <div className="instagram-error">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ width: '100%' }}>
         <div className="instagram-form-group">
           <input
             type="text"
@@ -58,6 +58,7 @@ export default function LoginForm({ onToggleMode }) {
             onChange={handleChange}
             required
             disabled={loading}
+            style={{ width: '100%', boxSizing: 'border-box' }}
           />
         </div>
 
@@ -71,6 +72,7 @@ export default function LoginForm({ onToggleMode }) {
             onChange={handleChange}
             required
             disabled={loading}
+            style={{ width: '100%', boxSizing: 'border-box' }}
           />
         </div>
 
@@ -78,6 +80,7 @@ export default function LoginForm({ onToggleMode }) {
           type="submit"
           className="instagram-btn-primary"
           disabled={loading}
+          style={{ width: '100%', marginTop: '1.5rem' }}
         >
           {loading ? (
             <span className="instagram-loading">
@@ -96,7 +99,13 @@ export default function LoginForm({ onToggleMode }) {
       </div>
 
       <div className="instagram-switch-container">
-        <p style={{ color: 'rgba(255, 255, 255, 0.6)', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
+        <p style={{ 
+          color: 'rgba(255, 255, 255, 0.6)', 
+          marginBottom: '0.75rem', 
+          fontSize: '0.9rem',
+          textAlign: 'center',
+          margin: '0'
+        }}>
           Don't have an account?
         </p>
         <button
@@ -104,6 +113,12 @@ export default function LoginForm({ onToggleMode }) {
           onClick={onToggleMode}
           className="instagram-switch-btn"
           disabled={loading}
+          style={{ 
+            width: '100%', 
+            textAlign: 'center',
+            padding: '0.75rem',
+            fontSize: '0.9rem'
+          }}
         >
           Sign up
         </button>
